@@ -1,2 +1,2 @@
-# thiscovery-skeleton
-Template Thiscovery stack
+# thiscovery-monitoring
+Thiscovery monitoring stack
