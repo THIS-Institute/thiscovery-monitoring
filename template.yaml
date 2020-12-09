@@ -20,6 +20,49 @@ Resources:
       Environment:
         Variables:
           SECRETS_NAMESPACE: !Sub /${EnvironmentTagName}/
+  Auth0Events:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
+  PersistAuth0Event:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub ${AWS::StackName}-PersistAuth0Event
+      Description: !Sub
+        - Stack ${StackTagName} Environment ${EnvironmentTagName} Function ${ResourceName}
+        - ResourceName: PersistAuth0Event
+      CodeUri: src/Function
+      Handler: handler.handler
+      Runtime: python3.7
+      MemorySize: 3008
+      Timeout: 30
+      Tracing: Active
+      Policies:
+        - AWSXrayWriteOnlyAccess
+        - DynamoDBCrudPolicy:
+            TableName: !Ref Auth0Events
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref Auth0Events
+          TABLE_ARN: !GetAtt Auth0Events.Arn
+      Events:
+        EventRule:
+          Type: EventBridgeRule
+          Properties:
+            Pattern:
+              detail-type:
+                - Auth0 log
+            EventBusName: auth0-event-bus
+          Metadata:
+            StackeryName: PersistAuth0EventsRule
 Parameters:
   StackTagName:
     Type: String
