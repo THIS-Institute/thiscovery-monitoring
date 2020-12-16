@@ -76,6 +76,33 @@ Resources:
             Pattern:
               detail-type:
                 - Auth0 log
+              account:
+                - 595383251813
+              detail:
+                data:
+                  type:
+                    - f
+                    - fcp
+                    - fcpr
+                    - fcu
+                    - fn
+                    - fp
+                    - fs
+                    - fu
+                    - fv
+                    - fvr
+                    - limit_mu
+                    - limit_wc
+                    - pwd_leak
+                    - s
+                    - sce
+                    - scp
+                    - slo
+                    - ss
+                    - sv
+                    - svr
+                    - unlkdu
+                    - w
             EventBusName: auth0-event-bus
           Metadata:
             StackeryName: PersistAuth0EventsRule
