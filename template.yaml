@@ -76,8 +76,6 @@ Resources:
             Pattern:
               detail-type:
                 - Auth0 log
-              account:
-                - 595383251813
               detail:
                 data:
                   type:
