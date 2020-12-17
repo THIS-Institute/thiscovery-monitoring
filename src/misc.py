@@ -50,3 +50,4 @@ def raise_error(event, context):
         "statusCode": HTTPStatus.OK,
         "body": json.dumps(msg)
     }
+

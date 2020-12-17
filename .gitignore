@@ -148,3 +148,4 @@ dmypy.json
 *.out
 *.synctex.gz
 
+/local/scratch.py
