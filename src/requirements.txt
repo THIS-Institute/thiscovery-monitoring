@@ -1,2 +1,7 @@
 # AWS requirements go here
 thiscovery-lib
+boto3
+epsagon
+python-json-logger
+requests
+validators
