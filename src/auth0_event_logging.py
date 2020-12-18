@@ -20,41 +20,41 @@ import json
 import time
 from http import HTTPStatus
 import thiscovery_lib.utilities as utils
-# from thiscovery_lib import dynamodb_utilities as ddb_utils
-# import src.common.constants as constants
+from thiscovery_lib import dynamodb_utilities as ddb_utils
+import src.common.constants as constants
 
 AUTH0_EVENTS_TABLE_NAME = 'Auth0Events'
 
-pass
-# class Auth0Event:
-#
-#     def __init__(self, event):
-#         # self.logger = utils.get_logger()
-#
-#         self.event_item = {
-#             'type': 's',
-#             'user_name': "andy.paterson@mac.com",
-#             'date': "2020-12-07T19:45:35.657Z",
-#         }
-#
-#         self.event = event
-#         self.type = 's'
-#
-#
-#     def save_event(self):
-#         ddb = ddb_utils.Dynamodb(stack_name=constants.STACK_NAME)
-#         ddb.put_item(AUTH0_EVENTS_TABLE_NAME, self.type, self.type, self.event, self.event_item, True, None, 'type')
 
-#
-# def test():
-#     e = Auth0Event({'k1': 'v1'})
-#     e.save_event()
-#
-#
-# @utils.lambda_wrapper
-# @utils.api_error_handler
-# def persist_auth0_event(event, context):
-#     pass
+class Auth0Event:
+
+    def __init__(self, event):
+        # self.logger = utils.get_logger()
+
+        self.event_item = {
+            'type': 's',
+            'user_name': "andy.paterson@mac.com",
+            'date': "2020-12-07T19:45:35.657Z",
+        }
+
+        self.event = event
+        self.type = 's'
+
+
+    def save_event(self):
+        ddb = ddb_utils.Dynamodb(stack_name=constants.STACK_NAME)
+        ddb.put_item(AUTH0_EVENTS_TABLE_NAME, self.type, self.type, self.event, self.event_item, True, None, 'type')
+
+
+def test():
+    e = Auth0Event({'k1': 'v1'})
+    e.save_event()
+
+
+@utils.lambda_wrapper
+@utils.api_error_handler
+def persist_auth0_event(event, context):
+    pass
     # logger = event['logger']
     # correlation_id = event['correlation_id']
     #
@@ -67,6 +67,7 @@ pass
     #     "statusCode": HTTPStatus.OK,
     #     "body": json.dumps(get_project_status_for_user(user_id, correlation_id))
     # }
+
 
 @utils.lambda_wrapper
 @utils.api_error_handler
