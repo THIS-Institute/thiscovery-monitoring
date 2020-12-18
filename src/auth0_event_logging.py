@@ -60,7 +60,6 @@ def test(event, context):
     e.save_event()
 
 
-@utils.lambda_wrapper
 @utils.api_error_handler
 def persist_auth0_event(event, context):
 
