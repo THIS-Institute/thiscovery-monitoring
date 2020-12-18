@@ -56,7 +56,7 @@ Resources:
         - Stack ${StackTagName} Environment ${EnvironmentTagName} Function ${ResourceName}
         - ResourceName: PersistAuth0Event
       CodeUri: src
-      Handler: auth0_event_logging.log_request_api
+      Handler: auth0_event_logging.test
       Runtime: python3.7
       MemorySize: 3008
       Timeout: 30
