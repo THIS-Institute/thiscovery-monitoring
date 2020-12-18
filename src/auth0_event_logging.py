@@ -20,8 +20,8 @@ import json
 import time
 from http import HTTPStatus
 import thiscovery_lib.utilities as utils
-from thiscovery_lib import dynamodb_utilities as ddb_utils
-import src.common.constants as constants
+# from thiscovery_lib import dynamodb_utilities as ddb_utils
+# import src.common.constants as constants
 
 AUTH0_EVENTS_TABLE_NAME = 'Auth0Events'
 
@@ -68,14 +68,14 @@ pass
     #     "body": json.dumps(get_project_status_for_user(user_id, correlation_id))
     # }
 
-# @utils.lambda_wrapper
-# @utils.api_error_handler
-# def log_request_api(event, context):
-#     logger = event['logger']
-#
-#     # params = event['queryStringParameters']
-#     # body = event['body']
-#     logger.info('API call', extra={'event': event})
-#     return {
-#         "statusCode": HTTPStatus.OK,
-#     }
+@utils.lambda_wrapper
+@utils.api_error_handler
+def log_request_api(event, context):
+    logger = event['logger']
+
+    # params = event['queryStringParameters']
+    # body = event['body']
+    logger.info('API call', extra={'event': event})
+    return {
+        "statusCode": HTTPStatus.OK,
+    }
