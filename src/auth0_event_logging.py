@@ -31,14 +31,21 @@ class Auth0Event:
     def __init__(self, event):
         # self.logger = utils.get_logger()
 
+        id = event['id']
+        detail_data = event['detail']['data']
+        date = detail_data['date']
+        type = detail_data['type']
+        user_name = detail_data['user_name']
+
         self.event_item = {
-            'type': 's',
-            'user_name': "andy.paterson@mac.com",
-            'date': "2020-12-07T19:45:35.657Z",
+            'id': id,
+            'date': date,
+            'type': type,
+            'user_name': user_name,
         }
 
         self.event = event
-        self.type = 's'
+        self.type = type
 
 
     def save_event(self):
@@ -56,19 +63,13 @@ def test(event, context):
 @utils.lambda_wrapper
 @utils.api_error_handler
 def persist_auth0_event(event, context):
-    pass
-    # logger = event['logger']
-    # correlation_id = event['correlation_id']
-    #
-    # params = event['queryStringParameters']
-    # user_id = str(utils.validate_uuid(params['user_id']))
-    # logger.info('API call', extra={'user_id': user_id, 'correlation_id': correlation_id, 'event': event})
-    # if user_id == '760f4e4d-4a3b-4671-8ceb-129d81f9d9ca':
-    #     raise ValueError('Deliberate error raised to test error handling')
-    # return {
-    #     "statusCode": HTTPStatus.OK,
-    #     "body": json.dumps(get_project_status_for_user(user_id, correlation_id))
-    # }
+
+    e = Auth0Event(event)
+    e.save_event()
+
+    return {
+        "statusCode": HTTPStatus.OK,
+    }
 
 
 @utils.lambda_wrapper
