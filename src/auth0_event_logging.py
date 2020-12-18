@@ -60,7 +60,7 @@ def test(event, context):
     e.save_event()
 
 
-@utils.api_error_handler
+# @utils.api_error_handler
 def persist_auth0_event(event, context):
 
     e = Auth0Event(event)
