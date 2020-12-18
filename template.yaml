@@ -65,10 +65,13 @@ Resources:
         - AWSXrayWriteOnlyAccess
         - DynamoDBCrudPolicy:
             TableName: !Ref Auth0Events
+        - AWSSecretsManagerGetSecretValuePolicy:
+            SecretArn: !Sub arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/${EnvironmentTagName}/*
       Environment:
         Variables:
           TABLE_NAME: !Ref Auth0Events
           TABLE_ARN: !GetAtt Auth0Events.Arn
+          SECRETS_NAMESPACE: !Sub /${EnvironmentTagName}/
       Events:
         EventRule:
           Type: EventBridgeRule
