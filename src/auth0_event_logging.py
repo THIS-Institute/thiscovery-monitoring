@@ -25,36 +25,36 @@ import src.common.constants as constants
 
 AUTH0_EVENTS_TABLE_NAME = 'Auth0Events'
 
+pass
+# class Auth0Event:
+#
+#     def __init__(self, event):
+#         # self.logger = utils.get_logger()
+#
+#         self.event_item = {
+#             'type': 's',
+#             'user_name': "andy.paterson@mac.com",
+#             'date': "2020-12-07T19:45:35.657Z",
+#         }
+#
+#         self.event = event
+#         self.type = 's'
+#
+#
+#     def save_event(self):
+#         ddb = ddb_utils.Dynamodb(stack_name=constants.STACK_NAME)
+#         ddb.put_item(AUTH0_EVENTS_TABLE_NAME, self.type, self.type, self.event, self.event_item, True, None, 'type')
 
-class Auth0Event:
-
-    def __init__(self, event):
-        # self.logger = utils.get_logger()
-
-        self.event_item = {
-            'type': 's',
-            'user_name': "andy.paterson@mac.com",
-            'date': "2020-12-07T19:45:35.657Z",
-        }
-
-        self.event = event
-        self.type = 's'
-
-
-    def save_event(self):
-        ddb = ddb_utils.Dynamodb(stack_name=constants.STACK_NAME)
-        ddb.put_item(AUTH0_EVENTS_TABLE_NAME, self.type, self.type, self.event, self.event_item, True, None, 'type')
-
-
-def test():
-    e = Auth0Event({'k1': 'v1'})
-    e.save_event()
-
-
-@utils.lambda_wrapper
-@utils.api_error_handler
-def persist_auth0_event(event, context):
-    pass
+#
+# def test():
+#     e = Auth0Event({'k1': 'v1'})
+#     e.save_event()
+#
+#
+# @utils.lambda_wrapper
+# @utils.api_error_handler
+# def persist_auth0_event(event, context):
+#     pass
     # logger = event['logger']
     # correlation_id = event['correlation_id']
     #
@@ -68,14 +68,14 @@ def persist_auth0_event(event, context):
     #     "body": json.dumps(get_project_status_for_user(user_id, correlation_id))
     # }
 
-@utils.lambda_wrapper
-@utils.api_error_handler
-def log_request_api(event, context):
-    logger = event['logger']
-
-    # params = event['queryStringParameters']
-    # body = event['body']
-    logger.info('API call', extra={'event': event})
-    return {
-        "statusCode": HTTPStatus.OK,
-    }
+# @utils.lambda_wrapper
+# @utils.api_error_handler
+# def log_request_api(event, context):
+#     logger = event['logger']
+#
+#     # params = event['queryStringParameters']
+#     # body = event['body']
+#     logger.info('API call', extra={'event': event})
+#     return {
+#         "statusCode": HTTPStatus.OK,
+#     }
