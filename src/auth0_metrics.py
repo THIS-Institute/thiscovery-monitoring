@@ -19,7 +19,6 @@
 import json
 import time
 import datetime
-import boto3
 from http import HTTPStatus
 import thiscovery_lib.utilities as utils
 from thiscovery_lib import dynamodb_utilities as ddb_utils
@@ -28,6 +27,7 @@ from thiscovery_lib import dynamodb_utilities as ddb_utils
 AUTH0_EVENTS_TABLE_NAME = 'Auth0Events'
 STACK_NAME = 'thiscovery-monitoring'
 METRIC_NAMESPACE = 'Authentication'
+
 
 class CloudWatchMetricsClient(utils.BaseClient):
 
