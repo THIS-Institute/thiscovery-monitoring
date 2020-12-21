@@ -35,7 +35,6 @@ class CloudWatchMetricsClient(utils.BaseClient):
         super().__init__('cloudwatch')
 
     def put_metric(self, metric_name, metric_value):
-        # Create CloudWatch client
 
         metric_data = [
                 {
