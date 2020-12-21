@@ -24,6 +24,7 @@ from thiscovery_lib import dynamodb_utilities as ddb_utils
 # import src.common.constants as constants
 
 AUTH0_EVENTS_TABLE_NAME = 'Auth0Events'
+STACK_NAME = 'thiscovery-monitoring'
 
 
 class Auth0Event:
@@ -31,26 +32,30 @@ class Auth0Event:
     def __init__(self, event):
         # self.logger = utils.get_logger()
 
+        # id, date and type will be present in every event, user_name may not be present for some events
         id = event['id']
         detail_data = event['detail']['data']
-        date = detail_data['date']
-        type = detail_data['type']
-        user_name = detail_data['user_name']
+        event_date = detail_data['event_date']
+        event_type = detail_data['event_type']
+        if 'user_name' in detail_data:
+            user_name = detail_data['user_name']
+        else:
+            user_name = 'unknown'
 
         self.event_item = {
             'id': id,
-            'date': date,
-            'type': type,
+            'event_date': event_date,
+            'event_type': event_type,
             'user_name': user_name,
         }
 
         self.event = event
-        self.type = type
+        self.event_type = event_type
 
 
     def save_event(self):
-        ddb = ddb_utils.Dynamodb(stack_name='thiscovery-monitoring')
-        ddb.put_item(AUTH0_EVENTS_TABLE_NAME, self.type, self.type, self.event, self.event_item, True, None, 'type')
+        ddb = ddb_utils.Dynamodb(stack_name=STACK_NAME)
+        ddb.put_item(AUTH0_EVENTS_TABLE_NAME, self.event_type, self.event_type, self.event, self.event_item, True, None, 'event_type')
 
 
 @utils.lambda_wrapper
