@@ -35,7 +35,7 @@ class Auth0Event:
         # id, date and type will be present in every event, user_name may not be present for some events
         id = event['id']
         detail_data = event['detail']['data']
-        event_date = detail_data['date']
+        event_date = detail_data['date'].replace('T',' ').replace('Z','')
         event_type = detail_data['type']
         if 'user_name' in detail_data:
             user_name = detail_data['user_name']

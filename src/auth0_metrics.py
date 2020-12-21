@@ -18,6 +18,7 @@
 
 import json
 import time
+import datetime
 from http import HTTPStatus
 import thiscovery_lib.utilities as utils
 from thiscovery_lib import dynamodb_utilities as ddb_utils
@@ -29,13 +30,19 @@ STACK_NAME = 'thiscovery-monitoring'
 
 def calculate_auth0_metrics(event, context):
 
+    time_now = utils.now_with_tz()
+    one_hour = datetime.timedelta(hours=1)
+    one_hour_ago = time_now - one_hour
+    print(one_hour_ago)
+
     ddb = ddb_utils.Dynamodb(stack_name=STACK_NAME)
 
     s_events = ddb.query(
             table_name=AUTH0_EVENTS_TABLE_NAME,
-            KeyConditionExpression='type = :type',
+            KeyConditionExpression='event_type = :event_type and event_date < :one_hour_ago',
             ExpressionAttributeValues={
-                ':type': 's',
+                ':event_type': 'slo',
+                ':one_hour_ago': 'one_hour_ago',
             }
         )
 
