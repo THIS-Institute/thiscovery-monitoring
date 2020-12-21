@@ -116,7 +116,7 @@ Resources:
         - ResourceName: CalculateAuth0Metrics
       CodeUri: src
       Handler: auth0_metrics.calculate_auth0_metrics
-      Runtime: python3.8
+      Runtime: python3.7
       MemorySize: 3008
       Timeout: 30
       Tracing: Active
