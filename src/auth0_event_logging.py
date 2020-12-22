@@ -21,10 +21,7 @@ import time
 from http import HTTPStatus
 import thiscovery_lib.utilities as utils
 from thiscovery_lib import dynamodb_utilities as ddb_utils
-# import src.common.constants as constants
-
-AUTH0_EVENTS_TABLE_NAME = 'Auth0Events'
-STACK_NAME = 'thiscovery-monitoring'
+import common.constants as constants
 
 
 class Auth0Event:
@@ -54,8 +51,8 @@ class Auth0Event:
 
 
     def save_event(self):
-        ddb = ddb_utils.Dynamodb(stack_name=STACK_NAME)
-        ddb.put_item(AUTH0_EVENTS_TABLE_NAME, self.event_type, self.event_type, self.event, self.event_item, True, None, 'event_type')
+        ddb = ddb_utils.Dynamodb(stack_name=constants.STACK_NAME)
+        ddb.put_item(constants.AUTH0_EVENTS_TABLE_NAME, self.event_type, self.event_type, self.event, self.event_item, True, None, 'event_type')
 
 
 @utils.lambda_wrapper

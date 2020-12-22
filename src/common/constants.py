@@ -16,3 +16,11 @@
 #   docs folder of this project.  It is also available www.gnu.org/licenses/
 #
 STACK_NAME = 'thiscovery-monitoring'
+AUTH0_EVENTS_TABLE_NAME = 'Auth0Events'
+METRIC_NAMESPACE = 'Authentication'
+
+# Auth0 event codes
+SUCCESSFUL_LOGIN = 's'
+FAILED_LOGIN = 'f'
+SUCCESSFUL_SIGNUP = 'ss'
+SUCCESSFUL_VERIFICATION_EMAIL = 'sv'
