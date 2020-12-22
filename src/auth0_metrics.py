@@ -27,8 +27,13 @@ import common.constants as constants
 
 class CloudWatchMetricsClient(utils.BaseClient):
 
-    def __init__(self):
+    def __init__(self, hours):
         super().__init__('cloudwatch')
+
+        if hours == 1:
+            self.value_label = 'Last hour'
+        else:
+            self.value_label = f'Last {hours} hours'
 
     def put_metric(self, metric_name, metric_value, metric_units = 'Count'):
 
@@ -38,7 +43,7 @@ class CloudWatchMetricsClient(utils.BaseClient):
                     'Dimensions': [
                         {
                             'Name': 'Logins',
-                            'Value': 'Last hour'
+                            'Value': self.value_label
                         },
                     ],
                     'Unit': metric_units,
@@ -82,10 +87,15 @@ def get_events(ddb, event_type, earliest_event_datetime):
 def calculate_auth0_metrics(event, context):
     logger = utils.get_logger()
 
-    x_hours_ago = time_x_hours_ago(12)
+    if event and 'hours' in event:
+        hours = int(event['hours'])
+    else:
+        hours = 1
+
+    x_hours_ago = time_x_hours_ago(hours)
 
     ddb = ddb_utils.Dynamodb(stack_name=constants.STACK_NAME)
-    cwm = CloudWatchMetricsClient()
+    cwm = CloudWatchMetricsClient(hours)
 
     # successful login users
     successful_login_events = get_events(ddb, constants.SUCCESSFUL_LOGIN, x_hours_ago)
@@ -101,8 +111,10 @@ def calculate_auth0_metrics(event, context):
     persistent_failed_login_count = len(persistent_failed_login_users)
     cwm.put_metric('FailedLogins', persistent_failed_login_count)
 
-    failed_login_percent = persistent_failed_login_count * 100 / (successful_login_count + persistent_failed_login_count)
-    cwm.put_metric('FailedLoginPercent', failed_login_percent, 'Percent')
+    failed_login_percent = None
+    if successful_login_count + persistent_failed_login_count > 0:
+        failed_login_percent = persistent_failed_login_count * 100 / (successful_login_count + persistent_failed_login_count)
+        cwm.put_metric('FailedLoginPercent', failed_login_percent, 'Percent')
 
     # successful signup users
     successful_signup_events = get_events(ddb, constants.SUCCESSFUL_SIGNUP, x_hours_ago)
@@ -124,6 +136,7 @@ def calculate_auth0_metrics(event, context):
     # percentage of completed signups
     uncompleted_signup_users = successful_signup_users - completed_signup_users
     uncompleted_signup_count = len(uncompleted_signup_users)
+    completed_signup_percent = None
     if successful_signup_count > 0:
         completed_signup_percent = (successful_signup_count - uncompleted_signup_count) * 100 / successful_signup_count
         cwm.put_metric('CompletedSignupPercent', completed_signup_percent, 'Percent')
@@ -141,6 +154,7 @@ def calculate_auth0_metrics(event, context):
                 completion_time = datetime.datetime.strptime(completed_signup_event['event_date'], constants.DATE_FORMAT)
                 signup_times[successful_signup_event['user_name']] = (completion_time - signup_time)
     # calculate average - note this could be done in loop above, but explict recording and averaging makes debugging and verification easier
+    average_elapsed_minutes = None
     if len(signup_times) > 0:
         total_elapsed_time = datetime.timedelta()
         for elapsed_time in signup_times.values():
