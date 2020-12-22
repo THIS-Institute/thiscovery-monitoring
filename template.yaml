@@ -137,8 +137,16 @@ Resources:
           Type: Schedule
           Properties:
             Schedule: rate(5 minutes)
+            Input: '{"hours": "1"}'
           Metadata:
             StackeryName: TriggerHourlyMetricsCalculation
+        Timer2:
+          Type: Schedule
+          Properties:
+            Schedule: rate(1 hour)
+            Input: '{"hours": "24"}'
+          Metadata:
+            StackeryName: TriggerDailyMetricsCalculation
 Parameters:
   StackTagName:
     Type: String
