@@ -126,6 +126,7 @@ Resources:
             SecretArn: !Sub arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/${EnvironmentTagName}/*
         - DynamoDBCrudPolicy:
             TableName: !Ref Auth0Events
+        - CloudWatchFullAccess
       Environment:
         Variables:
           SECRETS_NAMESPACE: !Sub /${EnvironmentTagName}/
