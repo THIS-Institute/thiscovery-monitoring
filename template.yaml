@@ -104,7 +104,7 @@ Resources:
                     - svr
                     - unlkdu
                     - w
-            EventBusName: auth0-event-bus
+            EventBusName: !Ref EnvConfigeventbridgeauth0eventbusAsString
           Metadata:
             StackeryName: PersistAuth0EventsRule
   CalculateAuth0Metrics:
@@ -160,7 +160,11 @@ Parameters:
   EnvConfiglambdatimeoutAsString:
     Type: AWS::SSM::Parameter::Value<String>
     Default: /<EnvironmentName>/lambda/timeout
+  EnvConfigeventbridgeauth0eventbusAsString:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /<EnvironmentName>/eventbridge/auth0-event-bus
 Metadata:
   EnvConfigParameters:
     EnvConfiglambdamemorysizeAsString: lambda.memory-size
     EnvConfiglambdatimeoutAsString: lambda.timeout
+    EnvConfigeventbridgeauth0eventbusAsString: eventbridge.auth0-event-bus
