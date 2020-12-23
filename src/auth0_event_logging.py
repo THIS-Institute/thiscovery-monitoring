@@ -55,13 +55,6 @@ class Auth0Event:
         ddb.put_item(constants.AUTH0_EVENTS_TABLE_NAME, self.event_type, self.event_type, self.event, self.event_item, True, None, 'event_type')
 
 
-@utils.lambda_wrapper
-@utils.api_error_handler
-def test(event, context):
-    e = Auth0Event({'k1': 'v1'})
-    e.save_event()
-
-
 # @utils.api_error_handler
 def persist_auth0_event(event, context):
 
