@@ -147,6 +147,28 @@ Resources:
             Input: '{"hours": "24"}'
           Metadata:
             StackeryName: TriggerDailyMetricsCalculation
+  EmailServiceAlarmTest:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub ${AWS::StackName}-EmailServiceAlarmTest
+      Description: !Sub
+        - Stack ${StackTagName} Environment ${EnvironmentTagName} Function ${ResourceName}
+        - ResourceName: EmailServiceAlarmTest
+      CodeUri: src
+      Handler: alarms.email_service_alarm_test
+      Runtime: python3.7
+      MemorySize: !Ref EnvConfiglambdamemorysizeAsString
+      Timeout: !Ref EnvConfiglambdatimeoutAsString
+      Tracing: Active
+      Policies:
+        - AWSXrayWriteOnlyAccess
+      Events:
+        Timer3:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 8 ? * 2 *)
+          Metadata:
+            StackeryName: TriggerEmailServiceAlarmTest
 Parameters:
   StackTagName:
     Type: String
