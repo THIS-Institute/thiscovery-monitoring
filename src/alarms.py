@@ -25,8 +25,10 @@ from thiscovery_lib.surveys_api_utilities import SurveysApiClient
 
 @utils.lambda_wrapper
 def email_service_alarm_test(event, context):
-    client = EmailsApiClient(correlation_id=event['correlation_id'])
-    client.send_email(email_dict={'brew_coffee': True})
+    env_name = utils.get_environment_name()
+    if env_name == 'prod':
+        client = EmailsApiClient(correlation_id=event['correlation_id'])
+        client.send_email(email_dict={'brew_coffee': True})
 
 
 @utils.lambda_wrapper
