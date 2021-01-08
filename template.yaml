@@ -8,7 +8,7 @@ Resources:
         - Stack ${StackTagName} Environment ${EnvironmentTagName} Function ${ResourceName}
         - ResourceName: RaiseError
       CodeUri: src
-      Handler: misc.raise_error
+      Handler: alarms.raise_error
       Runtime: python3.7
       MemorySize: !Ref EnvConfiglambdamemorysizeAsString
       Timeout: !Ref EnvConfiglambdatimeoutAsString
@@ -20,6 +20,13 @@ Resources:
       Environment:
         Variables:
           SECRETS_NAMESPACE: !Sub /${EnvironmentTagName}/
+      Events:
+        Timer6:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 8 ? * 2 *)
+          Metadata:
+            StackeryName: TriggerRaiseError
   Auth0Events:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -168,7 +175,7 @@ Resources:
         Timer3:
           Type: Schedule
           Properties:
-            Schedule: cron(0 8 ? * 2 *)
+            Schedule: cron(15 8 ? * 2 *)
           Metadata:
             StackeryName: TriggerEmailServiceAlarmTest
       Environment:
