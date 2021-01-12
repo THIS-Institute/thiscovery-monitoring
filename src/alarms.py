@@ -1,0 +1,53 @@
+#
+#   Thiscovery API - THIS Institute’s citizen science platform
+#   Copyright (C) 2020 THIS Institute
+#
+#   This program is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU Affero General Public License as
+#   published by the Free Software Foundation, either version 3 of the
+#   License, or (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU Affero General Public License for more details.
+#
+#   A copy of the GNU Affero General Public License is available in the
+#   docs folder of this project.  It is also available www.gnu.org/licenses/
+#
+import thiscovery_lib.utilities as utils
+
+from http import HTTPStatus
+from thiscovery_lib.emails_api_utilities import EmailsApiClient
+from thiscovery_lib.interviews_api_utilities import InterviewsApiClient
+from thiscovery_lib.surveys_api_utilities import SurveysApiClient
+
+
+@utils.lambda_wrapper
+def email_service_alarm_test(event, context):
+    env_name = utils.get_environment_name()
+    if env_name == 'prod':
+        client = EmailsApiClient(correlation_id=event['correlation_id'])
+        client.send_email(email_dict={'brew_coffee': True})
+
+
+@utils.lambda_wrapper
+def interviews_service_alarm_test(event, context):
+    client = InterviewsApiClient(correlation_id=event['correlation_id'])
+    client.set_interview_url(appointment_id=None, interview_url=None, event_type=None, **{'brew_coffee': True})
+
+
+@utils.lambda_wrapper
+def surveys_service_alarm_test(event, context):
+    client = SurveysApiClient(correlation_id=event['correlation_id'])
+    client.put_response(**{'brew_coffee': True})
+
+
+@utils.lambda_wrapper
+def raise_error(event, context):
+    return utils.log_exception_and_return_edited_api_response(
+        exception='Coffee is not available',
+        status_code=HTTPStatus.IM_A_TEAPOT,
+        logger_instance=event['logger'],
+        correlation_id=event['correlation_id'],
+    )
