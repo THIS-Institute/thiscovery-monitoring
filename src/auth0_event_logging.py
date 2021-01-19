@@ -32,7 +32,7 @@ class Auth0Event:
         # id, date and type will be present in every event, user_name may not be present for some events
         id = event['id']
         detail_data = event['detail']['data']
-        event_date = detail_data['date'].replace('T',' ').replace('Z','')
+        event_date = detail_data['date'].replace('T', ' ').replace('Z', '')
         event_type = detail_data['type']
         if 'user_name' in detail_data:
             user_name = detail_data['user_name']
@@ -49,10 +49,18 @@ class Auth0Event:
         self.event = event
         self.event_type = event_type
 
-
     def save_event(self):
         ddb = ddb_utils.Dynamodb(stack_name=constants.STACK_NAME)
-        ddb.put_item(constants.AUTH0_EVENTS_TABLE_NAME, self.event_type, self.event_type, self.event, self.event_item, True, None, 'event_type')
+        ddb.put_item(
+            table_name=constants.AUTH0_EVENTS_TABLE_NAME,
+            key=self.event_type,
+            item_type=self.event_type,
+            item_details=self.event,
+            item=self.event_item,
+            update_allowed=True,
+            correlation_id=None,
+            key_name='event_type'
+        )
 
 
 # @utils.api_error_handler
