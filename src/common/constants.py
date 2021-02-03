@@ -17,6 +17,8 @@
 #
 STACK_NAME = 'thiscovery-monitoring'
 AUTH0_EVENTS_TABLE_NAME = 'Auth0Events'
+AUTH0_EVENTS_TABLE_HASH = 'event_type'
+AUTH0_EVENTS_TABLE_SORT = 'event_date'
 METRIC_NAMESPACE = 'Authentication'
 
 # Auth0 event codes
