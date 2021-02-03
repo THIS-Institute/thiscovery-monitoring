@@ -106,8 +106,10 @@ def calculate_auth0_metrics(event, context):
     successful_login_count = len(successful_login_users)
     metrics_client.put_metric('SuccessfulLogins', successful_login_count)
 
-    # get login failures due to password or username errors
-    failed_login_events = auth0_event_client.get_events(constants.FAILED_LOGIN_PASSWORD, x_hours_ago) + auth0_event_client.get_events(constants.FAILED_LOGIN_USER, x_hours_ago)
+    # get login failures due to password (but not username) errors
+    failed_login_events = auth0_event_client.get_events(
+        constants.FAILED_LOGIN_PASSWORD, x_hours_ago
+    )
     failed_login_users = auth0_event_client.get_unique_users_from_events(failed_login_events)
     # don't include users that failed and then succeeded - they are nothing to worry about
     persistent_failed_login_users = failed_login_users - successful_login_users
