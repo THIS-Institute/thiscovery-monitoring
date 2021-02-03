@@ -26,17 +26,6 @@ from thiscovery_lib.eb_utilities import ThiscoveryEvent, EventbridgeClient
 import src.common.constants as const
 
 
-# region test users
-TEST_USER_01_JSON = {
-    "id": "d1070e81-557e-40eb-a7ba-b951ddb7ebdc",
-    "email": "altha@email.co.uk",
-    "first_name": "Altha",
-    "last_name": "Alcorn",
-    "country_code": "GB",
-}
-# endregion
-
-
 class TestAuth0EventPersistence(test_tools.BaseTestCase):
 
     @classmethod
@@ -59,10 +48,9 @@ class TestAuth0EventPersistence(test_tools.BaseTestCase):
             event_source='Auth 0',
             event_bus_name='auth0-event-bus'
         )
-        time.sleep(5)
+        time.sleep(1)
         events = self.ddb_client.scan(
             table_name=const.AUTH0_EVENTS_TABLE_NAME
         )
         self.assertEqual(1, len(events))
-        from pprint import pprint
-        pprint(events[0])
+        self.assertEqual(events[0]['user_name'], SUCCESSFUL_LOGIN['detail']['data']['user_name'])
