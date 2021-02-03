@@ -34,9 +34,8 @@ class Auth0Event:
         detail_data = event['detail']['data']
         event_date = detail_data['date'].replace('T', ' ').replace('Z', '')
         event_type = detail_data['type']
-        if 'user_name' in detail_data:
-            user_name = detail_data['user_name']
-        else:
+        user_name = detail_data.get('user_name')
+        if not user_name:  # None or empty string
             user_name = 'unknown'
 
         self.event_item = {
