@@ -30,21 +30,21 @@ def email_service_alarm_test(event, context):
     if env_name == 'prod':
         client = EmailsApiClient(correlation_id=event['correlation_id'])
         response = client.send_email(email_dict={'brew_coffee': True})
-        assert response['statusCode'] == HTTPStatus.IM_A_TEAPOT, f'Email service returned unexpected response {response}'
+        assert response['statusCode'] == HTTPStatus.METHOD_NOT_ALLOWED, f'Email service returned unexpected response {response}'
 
 
 @utils.lambda_wrapper
 def interviews_service_alarm_test(event, context):
     client = InterviewsApiClient(correlation_id=event['correlation_id'])
     response = client.set_interview_url(appointment_id=None, interview_url=None, event_type=None, **{'brew_coffee': True})
-    assert response['statusCode'] == HTTPStatus.IM_A_TEAPOT, f'Interviews service returned unexpected response {response}'
+    assert response['statusCode'] == HTTPStatus.METHOD_NOT_ALLOWED, f'Interviews service returned unexpected response {response}'
 
 
 @utils.lambda_wrapper
 def surveys_service_alarm_test(event, context):
     client = SurveysApiClient(correlation_id=event['correlation_id'])
     response = client.put_response(**{'brew_coffee': True})
-    assert response['statusCode'] == HTTPStatus.IM_A_TEAPOT, f'Surveys service returned unexpected response {response}'
+    assert response['statusCode'] == HTTPStatus.METHOD_NOT_ALLOWED, f'Surveys service returned unexpected response {response}'
 
 
 @utils.lambda_wrapper
@@ -52,7 +52,7 @@ def raise_error(event, context):
     joke = pyjokes.get_joke()
     return utils.log_exception_and_return_edited_api_response(
         exception=f'Deliberate error. Here is a joke for you:\n{joke}',
-        status_code=HTTPStatus.IM_A_TEAPOT,
+        status_code=HTTPStatus.METHOD_NOT_ALLOWED,
         logger_instance=event['logger'],
         correlation_id=event['correlation_id'],
     )
