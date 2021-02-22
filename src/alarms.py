@@ -19,9 +19,17 @@ import pyjokes
 import thiscovery_lib.utilities as utils
 
 from http import HTTPStatus
+from thiscovery_lib.core_api_utilities import CoreApiClient
 from thiscovery_lib.emails_api_utilities import EmailsApiClient
 from thiscovery_lib.interviews_api_utilities import InterviewsApiClient
 from thiscovery_lib.surveys_api_utilities import SurveysApiClient
+
+
+@utils.lambda_wrapper
+def core_service_alarm_test(event, context):
+    client = CoreApiClient(correlation_id=event['correlation_id'])
+    response = client.send_transactional_email(template_name='alarm_test', brew_coffee=True)
+    assert response['statusCode'] == HTTPStatus.METHOD_NOT_ALLOWED, f'Email service returned unexpected response {response}'
 
 
 @utils.lambda_wrapper
