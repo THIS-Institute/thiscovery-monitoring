@@ -30,6 +30,7 @@ def core_service_alarm_test(event, context):
     client = CoreApiClient(correlation_id=event['correlation_id'])
     response = client.send_transactional_email(template_name='alarm_test', brew_coffee=True)
     assert response['statusCode'] == HTTPStatus.METHOD_NOT_ALLOWED, f'Email service returned unexpected response {response}'
+    return response
 
 
 @utils.lambda_wrapper
@@ -39,6 +40,7 @@ def email_service_alarm_test(event, context):
         client = EmailsApiClient(correlation_id=event['correlation_id'])
         response = client.send_email(email_dict={'brew_coffee': True})
         assert response['statusCode'] == HTTPStatus.METHOD_NOT_ALLOWED, f'Email service returned unexpected response {response}'
+        return response
 
 
 @utils.lambda_wrapper
@@ -46,6 +48,7 @@ def interviews_service_alarm_test(event, context):
     client = InterviewsApiClient(correlation_id=event['correlation_id'])
     response = client.set_interview_url(appointment_id=None, interview_url=None, event_type=None, **{'brew_coffee': True})
     assert response['statusCode'] == HTTPStatus.METHOD_NOT_ALLOWED, f'Interviews service returned unexpected response {response}'
+    return response
 
 
 @utils.lambda_wrapper
@@ -53,6 +56,7 @@ def surveys_service_alarm_test(event, context):
     client = SurveysApiClient(correlation_id=event['correlation_id'])
     response = client.put_response(**{'brew_coffee': True})
     assert response['statusCode'] == HTTPStatus.METHOD_NOT_ALLOWED, f'Surveys service returned unexpected response {response}'
+    return response
 
 
 @utils.lambda_wrapper
