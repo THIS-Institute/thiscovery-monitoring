@@ -175,7 +175,7 @@ Resources:
         Timer3:
           Type: Schedule
           Properties:
-            Schedule: cron(15 8 ? * 2 *)
+            Schedule: rate(6 hours)
           Metadata:
             StackeryName: TriggerEmailServiceAlarmTest
       Environment:
@@ -202,7 +202,7 @@ Resources:
         Timer4:
           Type: Schedule
           Properties:
-            Schedule: cron(5 8 ? * 2 *)
+            Schedule: rate(6 hours)
           Metadata:
             StackeryName: TriggerInterviewsServiceAlarmTest
       Environment:
@@ -229,7 +229,7 @@ Resources:
         Timer5:
           Type: Schedule
           Properties:
-            Schedule: cron(10 8 ? * 2 *)
+            Schedule: rate(6 hours)
           Metadata:
             StackeryName: TriggerSurveysServiceAlarmTest
       Environment:
