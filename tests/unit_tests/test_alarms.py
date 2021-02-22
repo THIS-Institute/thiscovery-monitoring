@@ -37,6 +37,9 @@ class TestAlarms(test_tools.BaseTestCase):
     def test_core_service_alarm_ok(self):
         self.common_routine(alarms.core_service_alarm_test)
 
+    def test_events_service_alarm_ok(self):
+        self.common_routine(alarms.events_alarm_test)
+
     def test_interviews_service_alarm_ok(self):
         self.common_routine(alarms.interviews_service_alarm_test)
 

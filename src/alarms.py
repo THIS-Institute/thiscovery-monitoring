@@ -21,15 +21,27 @@ import thiscovery_lib.utilities as utils
 from http import HTTPStatus
 from thiscovery_lib.core_api_utilities import CoreApiClient
 from thiscovery_lib.emails_api_utilities import EmailsApiClient
+from thiscovery_lib.events_api_utilities import EventsApiClient
 from thiscovery_lib.interviews_api_utilities import InterviewsApiClient
 from thiscovery_lib.surveys_api_utilities import SurveysApiClient
+
+
+ERROR_MESSAGE = "service returned unexpected response"
 
 
 @utils.lambda_wrapper
 def core_service_alarm_test(event, context):
     client = CoreApiClient(correlation_id=event['correlation_id'])
     response = client.send_transactional_email(template_name='alarm_test', brew_coffee=True)
-    assert response['statusCode'] == HTTPStatus.METHOD_NOT_ALLOWED, f'Email service returned unexpected response {response}'
+    assert response['statusCode'] == HTTPStatus.METHOD_NOT_ALLOWED, f'Core {ERROR_MESSAGE} {response}'
+    return response
+
+
+@utils.lambda_wrapper
+def events_alarm_test(event, context):
+    client = EventsApiClient(correlation_id=event['correlation_id'])
+    response = client.post_event(event={'brew_coffee': True})
+    assert response['statusCode'] == HTTPStatus.METHOD_NOT_ALLOWED, f'Events {ERROR_MESSAGE} {response}'
     return response
 
 
@@ -39,7 +51,7 @@ def email_service_alarm_test(event, context):
     if env_name == 'prod':
         client = EmailsApiClient(correlation_id=event['correlation_id'])
         response = client.send_email(email_dict={'brew_coffee': True})
-        assert response['statusCode'] == HTTPStatus.METHOD_NOT_ALLOWED, f'Email service returned unexpected response {response}'
+        assert response['statusCode'] == HTTPStatus.METHOD_NOT_ALLOWED, f'Email {ERROR_MESSAGE} {response}'
         return response
 
 
@@ -47,7 +59,7 @@ def email_service_alarm_test(event, context):
 def interviews_service_alarm_test(event, context):
     client = InterviewsApiClient(correlation_id=event['correlation_id'])
     response = client.set_interview_url(appointment_id=None, interview_url=None, event_type=None, **{'brew_coffee': True})
-    assert response['statusCode'] == HTTPStatus.METHOD_NOT_ALLOWED, f'Interviews service returned unexpected response {response}'
+    assert response['statusCode'] == HTTPStatus.METHOD_NOT_ALLOWED, f'Interviews {ERROR_MESSAGE} {response}'
     return response
 
 
@@ -55,7 +67,7 @@ def interviews_service_alarm_test(event, context):
 def surveys_service_alarm_test(event, context):
     client = SurveysApiClient(correlation_id=event['correlation_id'])
     response = client.put_response(**{'brew_coffee': True})
-    assert response['statusCode'] == HTTPStatus.METHOD_NOT_ALLOWED, f'Surveys service returned unexpected response {response}'
+    assert response['statusCode'] == HTTPStatus.METHOD_NOT_ALLOWED, f'Surveys {ERROR_MESSAGE} {response}'
     return response
 
 
