@@ -262,6 +262,33 @@ Resources:
             Schedule: rate(6 hours)
           Metadata:
             StackeryName: TriggerCoreServiceAlarmTest
+  EventsAlarmTest:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub ${AWS::StackName}-EventsAlarmTest
+      Description: !Sub
+        - Stack ${StackTagName} Environment ${EnvironmentTagName} Function ${ResourceName}
+        - ResourceName: EventsAlarmTest
+      CodeUri: src
+      Handler: alarms.events_alarm_test
+      Runtime: python3.7
+      MemorySize: !Ref EnvConfiglambdamemorysizeAsString
+      Timeout: !Ref EnvConfiglambdatimeoutAsString
+      Tracing: Active
+      Policies:
+        - AWSXrayWriteOnlyAccess
+        - AWSSecretsManagerGetSecretValuePolicy:
+            SecretArn: !Sub arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:/${EnvironmentTagName}/*
+      Environment:
+        Variables:
+          SECRETS_NAMESPACE: !Sub /${EnvironmentTagName}/
+      Events:
+        Timer8:
+          Type: Schedule
+          Properties:
+            Schedule: rate(6 hours)
+          Metadata:
+            StackeryName: TriggerEventsAlarmTest
 Parameters:
   StackTagName:
     Type: String
