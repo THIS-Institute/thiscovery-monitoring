@@ -15,6 +15,7 @@
 #   A copy of the GNU Affero General Public License is available in the
 #   docs folder of this project.  It is also available www.gnu.org/licenses/
 #
+import pyjokes
 import thiscovery_lib.utilities as utils
 
 from http import HTTPStatus
@@ -28,25 +29,29 @@ def email_service_alarm_test(event, context):
     env_name = utils.get_environment_name()
     if env_name == 'prod':
         client = EmailsApiClient(correlation_id=event['correlation_id'])
-        client.send_email(email_dict={'brew_coffee': True})
+        response = client.send_email(email_dict={'brew_coffee': True})
+        assert response['statusCode'] == HTTPStatus.IM_A_TEAPOT, f'Email service returned unexpected response {response}'
 
 
 @utils.lambda_wrapper
 def interviews_service_alarm_test(event, context):
     client = InterviewsApiClient(correlation_id=event['correlation_id'])
-    client.set_interview_url(appointment_id=None, interview_url=None, event_type=None, **{'brew_coffee': True})
+    response = client.set_interview_url(appointment_id=None, interview_url=None, event_type=None, **{'brew_coffee': True})
+    assert response['statusCode'] == HTTPStatus.IM_A_TEAPOT, f'Interviews service returned unexpected response {response}'
 
 
 @utils.lambda_wrapper
 def surveys_service_alarm_test(event, context):
     client = SurveysApiClient(correlation_id=event['correlation_id'])
-    client.put_response(**{'brew_coffee': True})
+    response = client.put_response(**{'brew_coffee': True})
+    assert response['statusCode'] == HTTPStatus.IM_A_TEAPOT, f'Surveys service returned unexpected response {response}'
 
 
 @utils.lambda_wrapper
 def raise_error(event, context):
+    joke = pyjokes.get_joke()
     return utils.log_exception_and_return_edited_api_response(
-        exception='Coffee is not available',
+        exception=f'Deliberate error. Here is a joke for you:\n{joke}',
         status_code=HTTPStatus.IM_A_TEAPOT,
         logger_instance=event['logger'],
         correlation_id=event['correlation_id'],
