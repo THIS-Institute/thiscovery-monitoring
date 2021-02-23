@@ -41,11 +41,13 @@ class TestAuth0EventPersistence(test_tools.BaseTestCase):
 
     def test_ddb_dump_ok(self):
         test_event = ThiscoveryEvent(
-            event=SUCCESSFUL_LOGIN
+            event={
+                **SUCCESSFUL_LOGIN,
+                'event_source': 'Auth 0',
+            }
         )
         self.eb_client.put_event(
             thiscovery_event=test_event,
-            event_source='Auth 0',
             event_bus_name='auth0-event-bus'
         )
         time.sleep(1)
