@@ -45,3 +45,7 @@ class TestAlarms(test_tools.BaseTestCase):
 
     def test_surveys_service_alarm_ok(self):
         self.common_routine(alarms.surveys_service_alarm_test)
+
+    def test_raise_error_ok(self):
+        result = alarms.raise_error(dict(), None)
+        self.assertEqual(HTTPStatus.METHOD_NOT_ALLOWED, result['statusCode'])

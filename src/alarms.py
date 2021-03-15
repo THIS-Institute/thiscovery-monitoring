@@ -75,7 +75,7 @@ def surveys_service_alarm_test(event, context):
 def raise_error(event, context):
     joke = pyjokes.get_joke()
     return utils.log_exception_and_return_edited_api_response(
-        exception=f'Deliberate error. Here is a joke for you:\n{joke}',
+        exception=utils.DeliberateError(f'Deliberate error. Here is a joke for you:\n{joke}', details=dict()),
         status_code=HTTPStatus.METHOD_NOT_ALLOWED,
         logger_instance=event['logger'],
         correlation_id=event['correlation_id'],
