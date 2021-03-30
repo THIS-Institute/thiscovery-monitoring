@@ -315,6 +315,22 @@ Resources:
       Statistic: Minimum
       Threshold: '100'
       TreatMissingData: notBreaching
+  LoginFailedAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref MetricAlarmsTopic
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: Logins
+          Value: Last hour
+      EvaluationPeriods: 1
+      MetricName: FailedLoginPercent
+      Namespace: Authentication
+      Period: 60
+      Statistic: Minimum
+      Threshold: '0'
+      TreatMissingData: notBreaching
 Parameters:
   StackTagName:
     Type: String
