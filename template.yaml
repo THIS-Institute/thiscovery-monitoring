@@ -328,7 +328,7 @@ Resources:
       MetricName: FailedLoginPercent
       Namespace: Authentication
       Period: 60
-      Statistic: Minimum
+      Statistic: Maximum
       Threshold: '0'
       TreatMissingData: notBreaching
 Parameters:
