@@ -289,16 +289,32 @@ Resources:
             Schedule: rate(6 hours)
           Metadata:
             StackeryName: TriggerEventsAlarmTest
-  MetricAlarms:
+  MetricAlarmsTopic:
     Type: AWS::SNS::Topic
     Properties:
-      TopicName: !Sub ${AWS::StackName}-MetricAlarms
+      TopicName: !Sub ${AWS::StackName}-MetricAlarmsTopic
   MetricAlarmsSubscription:
     Type: AWS::SNS::Subscription
     Properties:
-      TopicArn: !Ref MetricAlarms
+      TopicArn: !Ref MetricAlarmsTopic
       Protocol: Email
       Endpoint: andy.paterson@thisinstitute.cam.ac.uk
+  SignupIncompleteAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref MetricAlarmsTopic
+      ComparisonOperator: LessThanThreshold
+      Dimensions:
+        - Name: Logins
+          Value: Last hour
+      EvaluationPeriods: 1
+      MetricName: CompletedSignupPercent
+      Namespace: Authentication
+      Period: 60
+      Statistic: Minimum
+      Threshold: '100'
+      TreatMissingData: notBreaching
 Parameters:
   StackTagName:
     Type: String
