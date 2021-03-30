@@ -296,7 +296,7 @@ Resources:
   MetricAlarmsSubscription:
     Type: AWS::SNS::Subscription
     Properties:
-      TopicArn: !GetAtt MetricAlarms.Arn
+      TopicArn: !Ref MetricAlarms
       Protocol: Email
       Endpoint: andy.paterson@thisinstitute.cam.ac.uk
 Parameters:
