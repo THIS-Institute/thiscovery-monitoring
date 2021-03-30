@@ -293,6 +293,12 @@ Resources:
     Type: AWS::SNS::Topic
     Properties:
       TopicName: !Sub ${AWS::StackName}-MetricAlarms
+  MetricAlarmsSubscription:
+    Type: AWS::SNS::Subscription
+    Properties:
+      TopicArn: !GetAtt MetricAlarms.Arn
+      Protocol: Email
+      Endpoint: andy.paterson@thisinstitute.cam.ac.uk
 Parameters:
   StackTagName:
     Type: String
