@@ -324,8 +324,25 @@ Resources:
       Dimensions:
         - Name: Logins
           Value: Last hour
-      EvaluationPeriods: 1
+      EvaluationPeriods: 2
+      DatapointsToAlarm: 2
       MetricName: FailedLoginPercent
+      Namespace: Authentication
+      Period: 60
+      Statistic: Maximum
+      Threshold: '2'
+      TreatMissingData: notBreaching
+  FailedSignupEmailAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmActions:
+        - !Ref MetricAlarmsTopic
+      ComparisonOperator: GreaterThanThreshold
+      Dimensions:
+        - Name: Logins
+          Value: Last hour
+      EvaluationPeriods: 1
+      MetricName: FailedSignupEmails
       Namespace: Authentication
       Period: 60
       Statistic: Maximum
