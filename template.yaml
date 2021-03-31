@@ -298,7 +298,7 @@ Resources:
     Properties:
       TopicArn: !Ref MetricAlarmsTopic
       Protocol: Email
-      Endpoint: andy.paterson@thisinstitute.cam.ac.uk
+      Endpoint: !Ref EnvConfigSNSmetricalertemailAsString
   SignupIncompleteAlarm:
     Type: AWS::CloudWatch::Alarm
     Properties:
@@ -347,8 +347,12 @@ Parameters:
   EnvConfigeventbridgeauth0eventbusAsString:
     Type: AWS::SSM::Parameter::Value<String>
     Default: /<EnvironmentName>/eventbridge/auth0-event-bus
+  EnvConfigSNSmetricalertemailAsString:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /<EnvironmentName>/sns/metric-alert-email
 Metadata:
   EnvConfigParameters:
     EnvConfiglambdamemorysizeAsString: lambda.memory-size
     EnvConfiglambdatimeoutAsString: lambda.timeout
     EnvConfigeventbridgeauth0eventbusAsString: eventbridge.auth0-event-bus
+    EnvConfigSNSmetricalertemailAsString: sns.metric-alert-email
