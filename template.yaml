@@ -311,7 +311,7 @@ Resources:
       EvaluationPeriods: 1
       MetricName: CompletedSignupPercent
       Namespace: Authentication
-      Period: 600
+      Period: 7200
       Statistic: Minimum
       Threshold: '100'
       TreatMissingData: notBreaching
