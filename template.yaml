@@ -311,7 +311,7 @@ Resources:
       EvaluationPeriods: 1
       MetricName: CompletedSignupPercent
       Namespace: Authentication
-      Period: 60
+      Period: 600
       Statistic: Minimum
       Threshold: '100'
       TreatMissingData: notBreaching
@@ -323,12 +323,12 @@ Resources:
       ComparisonOperator: GreaterThanThreshold
       Dimensions:
         - Name: Logins
-          Value: Last hour
+          Value: Last 24 hours
       EvaluationPeriods: 2
       DatapointsToAlarm: 2
       MetricName: FailedLoginPercent
       Namespace: Authentication
-      Period: 60
+      Period: 7200
       Statistic: Maximum
       Threshold: '2'
       TreatMissingData: notBreaching
