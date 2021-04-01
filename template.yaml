@@ -308,7 +308,7 @@ Resources:
       Dimensions:
         - Name: Logins
           Value: Last hour
-      EvaluationPeriods: 1
+      EvaluationPeriods: 10
       MetricName: CompletedSignupPercent
       Namespace: Authentication
       Period: 7200
