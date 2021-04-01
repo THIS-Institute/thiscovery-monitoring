@@ -326,7 +326,7 @@ Resources:
           Value: Last 24 hours
       EvaluationPeriods: 2
       DatapointsToAlarm: 2
-      MetricName: FailedLoginPercent
+      MetricName: FailedLogins
       Namespace: Authentication
       Period: 7200
       Statistic: Maximum
